@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RailOptima Frontend Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .status-card {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .status-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+        }
+        .status-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .online { background: #4ade80; }
+        .offline { background: #f87171; }
+        .checking { background: #fbbf24; animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .link-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        .link-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.25);
+        }
+        .link-card a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .link-card p {
+            margin: 10px 0 0 0;
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        .test-results {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .success { color: #4ade80; }
+        .error { color: #f87171; }
+        .info { color: #60a5fa; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚂 RailOptima System Status</h1>
+        
+        <div class="status">
+            <div class="status-card">
+                <h3>Backend Server</h3>
+                <div id="backend-status">
+                    <span class="status-indicator checking"></span>
+                    Checking...
+                </div>
+            </div>
+            <div class="status-card">
+                <h3>Frontend Dev</h3>
+                <div id="frontend-status">
+                    <span class="status-indicator checking"></span>
+                    Checking...
+                </div>
+            </div>
+            <div class="status-card">
+                <h3>Application Health</h3>
+                <div id="app-status">
+                    <span class="status-indicator checking"></span>
+                    Checking...
+                </div>
+            </div>
+        </div>
+
+        <div class="links">
+            <div class="link-card">
+                <a href="http://localhost:5173" target="_blank">🎮 Frontend Application</a>
+                <p>Main RailOptima interface with role-based access and simulation dashboard</p>
+            </div>
+            <div class="link-card">
+                <a href="http://localhost:5000/health" target="_blank">🔍 Backend Health Check</a>
+                <p>Backend server status and API connectivity test</p>
+            </div>
+            <div class="link-card">
+                <a href="http://localhost:5000/api/simulations" target="_blank">📊 API Endpoints</a>
+                <p>Test backend API endpoints and simulation data</p>
+            </div>
+        </div>
+
+        <div class="test-results">
+            <h3>🧪 System Tests</h3>
+            <div id="test-output">
+                <div class="info">Running system diagnostics...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function checkBackend() {
+            try {
+                const response = await fetch('http://localhost:5000/health');
+                if (response.ok) {
+                    document.getElementById('backend-status').innerHTML = 
+                        '<span class="status-indicator online"></span>Online (Port 5000)';
+                    return true;
+                } else {
+                    throw new Error('Backend not responding correctly');
+                }
+            } catch (error) {
+                document.getElementById('backend-status').innerHTML = 
+                    '<span class="status-indicator offline"></span>Offline (Port 5000)';
+                return false;
+            }
+        }
+
+        async function checkFrontend() {
+            try {
+                const response = await fetch('http://localhost:5173');
+                if (response.ok) {
+                    document.getElementById('frontend-status').innerHTML = 
+                        '<span class="status-indicator online"></span>Online (Port 5173)';
+                    return true;
+                } else {
+                    throw new Error('Frontend not responding correctly');
+                }
+            } catch (error) {
+                document.getElementById('frontend-status').innerHTML = 
+                    '<span class="status-indicator offline"></span>Offline (Port 5173)';
+                return false;
+            }
+        }
+
+        async function runTests() {
+            const testOutput = document.getElementById('test-output');
+            testOutput.innerHTML = '<div class="info">Running system diagnostics...</div>';
+
+            const results = [];
+            
+            // Test Backend
+            const backendOk = await checkBackend();
+            results.push({
+                test: 'Backend Connectivity',
+                status: backendOk ? 'success' : 'error',
+                message: backendOk ? 'Backend server is responding' : 'Backend server is not accessible'
+            });
+
+            // Test Frontend
+            const frontendOk = await checkFrontend();
+            results.push({
+                test: 'Frontend Dev Server',
+                status: frontendOk ? 'success' : 'error',
+                message: frontendOk ? 'Frontend dev server is running' : 'Frontend dev server is not accessible'
+            });
+
+            // Overall Status
+            const overallOk = backendOk && frontendOk;
+            document.getElementById('app-status').innerHTML = overallOk 
+                ? '<span class="status-indicator online"></span>System Healthy'
+                : '<span class="status-indicator offline"></span>System Issues Detected';
+
+            // Display Results
+            const resultsHtml = results.map(result => 
+                `<div class="${result.status}">
+                    <strong>${result.test}:</strong> ${result.message}
+                </div>`
+            ).join('');
+
+            testOutput.innerHTML = resultsHtml + (overallOk 
+                ? '<div class="success"><strong>✅ All systems operational!</strong> You can now access the RailOptima application.</div>'
+                : '<div class="error"><strong>⚠️ Issues detected!</strong> Please check the services above.</div>'
+            );
+        }
+
+        // Run tests when page loads
+        window.addEventListener('load', runTests);
+        
+        // Auto-refresh every 30 seconds
+        setInterval(runTests, 30000);
+    </script>
+</body>
+</html>

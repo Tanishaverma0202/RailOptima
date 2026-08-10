@@ -1,0 +1,38 @@
+{
+  "name": "railoptima-backend",
+  "version": "1.0.0",
+  "description": "Backend API for RailOptima Railway Optimization System",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest",
+    "seed": "node src/database/seed.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "dotenv": "^16.3.1",
+    "mongoose": "^8.0.3",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "socket.io": "^4.7.4",
+    "joi": "^17.11.0",
+    "winston": "^3.11.0",
+    "node-cron": "^3.0.3",
+    "uuid": "^9.0.1",
+    "compression": "^1.7.4",
+    "rate-limiter-flexible": "^5.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "@types/jest": "^29.5.8"
+  },
+  "keywords": ["railway", "optimization", "scheduling", "api", "nodejs"],
+  "author": "RailOptima Team",
+  "license": "MIT"
+}
