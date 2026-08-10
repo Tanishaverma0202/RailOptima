@@ -1,6 +1,5 @@
-# RailOptima
-  https://railoptima.netlify.app/
-
+# RailOptima                                                                                                     { Live Demo: https://railoptimadeploy.vercel.app/}
+ 
 RailOptima is an advanced railway optimization platform built with a React/Vite frontend and a Node.js/Express backend.
 It provides intelligent scheduling, conflict detection, real-time visualization, AI-based recommendations, and analytics for railway operations.
 
